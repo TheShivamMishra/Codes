@@ -105,11 +105,69 @@ void isPalindromeSubstring(string str)
     display2D(dp);
 }
 
+int longestPalindromeSubstring(string str) //Time: O(N^2), Space: O(n^2);
+{
+    int n = str.size(); // dp[i][j] will store the longrest palindrome string from i to j if its palindrome;
+    vvi dp(n, vi(n, 0));
+    int omax = 0;
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; j++, ++i) // gap type loop used;
+        {
+            if (gap == 0)
+            {
+                dp[i][j] = 1; // string of size 1;
+                continue;
+            }
+            if (gap == 1 && str[i] == str[j])
+                dp[i][j] = 2; //string of size 2;
+            else if (str[i] == str[j] && dp[i + 1][j - 1] != 0)
+                dp[i][j] = dp[i + 1][j - 1] + 2;
+            omax = max(omax, dp[i][j]);
+        }
+    }
+
+    display2D(dp);
+    return omax;
+}
+
+// Space Optimized soltuion for longes Plaindrome substirng;
+int longestPalindormeSubstring_SpaceOptimized(string str) //Time: O(N^2), Space: O(1);
+{
+    // Main Idea starts:
+    // The idea is to check for every index as the startig index as mid point then checking for every even & odd
+    //length string form mid point by incrementing the low and high indexes and updating maxValue for overallMax;
+    int n = str.size();
+    int omax = 0;
+    for (int i = 1; i < n; i++) // running loop for every index as mid;
+    {
+        int low = i - 1, high = i + 1;
+        while (low >= 0 && high <= n && str[low] == str[high]) //for odd longest length of string;
+        {
+            omax = max(omax, high - low + 1);
+            low--;
+            high++;
+        }
+
+        low = i, high = i + 1;
+        while (low >= 0 && high <= n && str[low] == str[high]) //for even longest length of string;
+        {
+            omax = max(omax, high - low + 1);
+            low--;
+            high++;
+        }
+    }
+
+    return omax;
+}
+
 void solve()
 {
     // cout << fibonacci(105) << "\n";
     // cout << count_of_ways(5, 2) << endl;
-    isPalindromeSubstring("abaccae");
+    // isPalindromeSubstring("abaccab");
+    // cout << longestPalindromeSubstring("abaccabe");
+    cout << longestPalindormeSubstring_SpaceOptimized("abaccabe");
 }
 
 int main()
