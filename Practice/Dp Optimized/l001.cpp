@@ -81,10 +81,35 @@ int count_of_ways(int n, int k)
     return (n & 1) ? dp[1][k] : dp[0][k];
 }
 
+// substring and subsequence using optimized dp solutions;
+void isPalindromeSubstring(string str)
+{
+    int n = str.size(); // dp[i][j] will store that the string from i to j is palindrome or not;
+    vvi dp(n, vi(n, 0));
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; j++, ++i) // gap type loop used;
+        {
+            if (gap == 0)
+            {
+                dp[i][j] = true; // string of size 1;
+                continue;
+            }
+            if (gap == 1 && str[i] == str[j])
+                dp[i][j] = true;
+            else if (str[i] == str[j] && dp[i + 1][j - 1])
+                dp[i][j] = true;
+        }
+    }
+
+    display2D(dp);
+}
+
 void solve()
 {
     // cout << fibonacci(105) << "\n";
-    cout << count_of_ways(5, 2) << endl;
+    // cout << count_of_ways(5, 2) << endl;
+    isPalindromeSubstring("abaccae");
 }
 
 int main()
