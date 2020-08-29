@@ -58,29 +58,33 @@ int count_of_ways(int n, int k)
         return 0;
     if (n == k || k == 1)
         return 1;
-    vector<vector<int>> dp(n + 1, vector<int>(k + 1, 0));
+
+    vector<vector<int>> dp(2, vector<int>(k + 1, 0));
     for (int i = 1; i <= n; i++)
     {
-        for (int j = 1; j <= i && j<=k; j++)
+        int idx = (1 & i); // to simulate 2D effect in 1d this step just alter the index b\w 1 and 0;
+        for (int j = 1; j <= i && j <= k; j++)
         {
             if (j == 1 || i == j)
             {
-                dp[i][j] = 1;
+                dp[idx][j] = 1;
                 continue;
             }
-
-            dp[i][j] = dp[i-1][j-1] + dp[i-1][j]*j;
+            if (idx == 1)
+                dp[idx][j] = dp[idx - 1][j - 1] + dp[idx - 1][j] * j;
+            else
+                dp[idx][j] = dp[1 - idx][j - 1] + dp[1 - idx][j] * j;
         }
     }
 
     display2D(dp);
-    return dp[n][k];
+    return (n & 1) ? dp[1][k] : dp[0][k];
 }
 
 void solve()
 {
     // cout << fibonacci(105) << "\n";
-    cout<<count_of_ways(5,2)<<endl;
+    cout << count_of_ways(5, 2) << endl;
 }
 
 int main()
