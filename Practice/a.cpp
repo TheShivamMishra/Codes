@@ -17,11 +17,18 @@ auto SpeedUp = []() {
     return 0;
 }();
 
-int solve()
+int64_t solve()
 {
     int n;
     cin>>n;
+    string str;
+    cin>>str;
 
+    int64_t count;
+    for(int i=n-1;i>=0;i--)
+    {
+        i
+    }
 }
 
 int main()

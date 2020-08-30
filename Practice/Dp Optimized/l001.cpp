@@ -183,8 +183,40 @@ int longestPalindromeSubseq(string str) //Time : O(N^2) Space : O(N^2);
                 dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
         }
     }
+    display2D(dp);
+    return dp[0][n - 1];
+}
 
-    return dp[0][n-1];
+int longestPalindromeSubseq_SpaceOptimized(string str) //Time : o(N^2) Space : O(N);
+{
+    int n = str.size();
+    vi dp(n, 0);     // dp[i] will store the longestpalindrome upto that index;
+    int lastMax = 0; // lastMax is used to store the previous maximum;
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, j++)
+        {
+            if (gap == 0)
+            {
+                dp[j] = 1;
+                lastMax = dp[j];
+                continue;
+            }
+
+            if (str[i] == str[j])
+            {
+                if (gap == 1)
+                    dp[j] = 2;
+                else
+                    dp[j] = lastMax + 2;
+                lastMax = dp[j];
+            }
+            else
+                dp[j] = max(dp[j], dp[j - 1]);
+        }
+    }
+    display(dp);
+    return dp[n-1];
 }
 
 void solve()
@@ -194,7 +226,8 @@ void solve()
     // isPalindromeSubstring("abaccab");
     // cout << longestPalindromeSubstring("abaccabe");
     // cout << longestPalindormeSubstring_SpaceOptimized("abaccabe");
-    cout << longestPalindromeSubseq("abackecabe");
+    // cout << longestPalindromeSubseq("abackecabe");
+    cout << longestPalindromeSubseq_SpaceOptimized("abackecabe");
 }
 
 int main()
