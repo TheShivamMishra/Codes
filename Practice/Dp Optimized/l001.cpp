@@ -107,7 +107,7 @@ void isPalindromeSubstring(string str)
 
 int longestPalindromeSubstring(string str) //Time: O(N^2), Space: O(n^2);
 {
-    int n = str.size(); // dp[i][j] will store the longrest palindrome string from i to j if its palindrome;
+    int n = str.size(); // dp[i][j] will store the longrest palindrome substring from i to j if its palindrome;
     vvi dp(n, vi(n, 0));
     int omax = 0;
     for (int gap = 0; gap < n; gap++)
@@ -187,36 +187,62 @@ int longestPalindromeSubseq(string str) //Time : O(N^2) Space : O(N^2);
     return dp[0][n - 1];
 }
 
+/*
 int longestPalindromeSubseq_SpaceOptimized(string str) //Time : o(N^2) Space : O(N);
 {
     int n = str.size();
     vi dp(n, 0);     // dp[i] will store the longestpalindrome upto that index;
     int lastMax = 0; // lastMax is used to store the previous maximum;
-    for (int gap = 0; gap < n; gap++)
+    for (int gap = n - 1; gap >= 0; gap--)
     {
-        for (int i = 0, j = gap; j < n; i++, j++)
+        for (int i = gap, j = n - 1; i >= 0; i--, j--)
         {
-            if (gap == 0)
+            if (gap == n - 1)
             {
-                dp[j] = 1;
-                lastMax = dp[j];
+                dp[i] = 1;
+                lastMax = 1;
                 continue;
             }
 
             if (str[i] == str[j])
             {
-                if (gap == 1)
-                    dp[j] = 2;
+                if (gap == n - 2)
+                    dp[i] = 2;
                 else
-                    dp[j] = lastMax + 2;
-                lastMax = dp[j];
+                    dp[i] = lastMax + 2;
+                lastMax = dp[i];
             }
             else
-                dp[j] = max(dp[j], dp[j - 1]);
+                dp[i] = max(dp[i], dp[i - 1]);
+        }
+        display(dp);
+    }
+    // display(dp);
+    return dp[0];
+}
+*/
+
+int longestCommonSubsequence(string str1, string str2) //Time : O(N^2), Space O(N^2)
+{
+    int n = str1.size();
+    int m = str2.size();
+
+    vvi dp(n + 1, vi(m + 1, 0)); // dp[i][j] will store the longest common subsequence i.e L[i][j] contains length of LCS of X[0..i - 1] and Y[0..j - 1];
+    for (int i = 0; i <= n; i++)
+    {
+        for (int j = 0; j <= m; j++)
+        {
+            if (i == 0 || j == 0)
+                continue;
+
+            if (str1[i-1] == str2[j-1])
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            else
+                dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
         }
     }
-    display(dp);
-    return dp[n-1];
+    display2D(dp);
+    return dp[n][m];
 }
 
 void solve()
@@ -227,7 +253,8 @@ void solve()
     // cout << longestPalindromeSubstring("abaccabe");
     // cout << longestPalindormeSubstring_SpaceOptimized("abaccabe");
     // cout << longestPalindromeSubseq("abackecabe");
-    cout << longestPalindromeSubseq_SpaceOptimized("abackecabe");
+    // cout << longestPalindromeSubseq_SpaceOptimized("abackecabe");
+    cout << longestCommonSubsequence("abefk", "egabe");
 }
 
 int main()
