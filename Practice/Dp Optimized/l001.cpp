@@ -161,13 +161,40 @@ int longestPalindormeSubstring_SpaceOptimized(string str) //Time: O(N^2), Space:
     return omax;
 }
 
+int longestPalindromeSubseq(string str) //Time : O(N^2) Space : O(N^2);
+{
+    int n = str.size();
+    vvi dp(n, vi(n, 0)); // dp[i][j] will store the longest palindrome from index i to j;
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int i = 0, j = gap; j < n; i++, ++j)
+        {
+            if (gap == 0)
+            {
+                dp[i][j] = 1;
+                continue;
+            }
+            if (str[i] == str[j])
+                if (gap == 1)
+                    dp[i][j] = 2;
+                else
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+            else
+                dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+        }
+    }
+
+    return dp[0][n-1];
+}
+
 void solve()
 {
     // cout << fibonacci(105) << "\n";
     // cout << count_of_ways(5, 2) << endl;
     // isPalindromeSubstring("abaccab");
     // cout << longestPalindromeSubstring("abaccabe");
-    cout << longestPalindormeSubstring_SpaceOptimized("abaccabe");
+    // cout << longestPalindormeSubstring_SpaceOptimized("abaccabe");
+    cout << longestPalindromeSubseq("abackecabe");
 }
 
 int main()
