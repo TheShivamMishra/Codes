@@ -227,7 +227,7 @@ int longestCommonSubsequence(string str1, string str2) //Time : O(N^2), Space O(
     int n = str1.size();
     int m = str2.size();
 
-    vvi dp(n + 1, vi(m + 1, 0)); // dp[i][j] will store the longest common subsequence i.e L[i][j] contains length of LCS of X[0..i - 1] and Y[0..j - 1];
+    vvi dp(n + 1, vi(m + 1, 0)); // dp[i][j] will store the longest common subsequence i.e dp[i][j] contains length of LCS of X[0..i - 1] and Y[0..j - 1];
     for (int i = 0; i <= n; i++)
     {
         for (int j = 0; j <= m; j++)
@@ -235,7 +235,7 @@ int longestCommonSubsequence(string str1, string str2) //Time : O(N^2), Space O(
             if (i == 0 || j == 0)
                 continue;
 
-            if (str1[i-1] == str2[j-1])
+            if (str1[i - 1] == str2[j - 1])
                 dp[i][j] = dp[i - 1][j - 1] + 1;
             else
                 dp[i][j] = max(dp[i][j - 1], dp[i - 1][j]);
@@ -243,6 +243,29 @@ int longestCommonSubsequence(string str1, string str2) //Time : O(N^2), Space O(
     }
     display2D(dp);
     return dp[n][m];
+}
+
+int longestCommonSubseq_SpaceOptimized(string str1, string str2) //Time: O(N^2), Space O(N);
+{
+    int n = str1.size();
+    int m = str2.size();
+    vvi dp(2, vi(m + 1, 0)); //its dp[i][j] will goining to store the longest subsequnce i.e dp[i][j] contains length of LCS of X[0..i - 1] and Y[0..j - 1];
+    int idx;
+    for (int i = 0; i <= n; i++)
+    {
+        idx = (1 & i);  // using to simulate 2D effedt in 1-D using idx;
+        for (int j = 0; j <= m; j++)
+        {
+            if (i == 0 || j == 0)
+                continue;
+            if (str1[i - 1] == str2[j - 1])
+                dp[idx][j] = dp[1 - idx][j - 1] + 1;
+            else
+                dp[idx][j] = max(dp[1 - idx][j], dp[idx][j - 1]);
+        }
+    }
+    // display2D(dp);
+    return dp[idx][m];
 }
 
 void solve()
@@ -254,7 +277,8 @@ void solve()
     // cout << longestPalindormeSubstring_SpaceOptimized("abaccabe");
     // cout << longestPalindromeSubseq("abackecabe");
     // cout << longestPalindromeSubseq_SpaceOptimized("abackecabe");
-    cout << longestCommonSubsequence("abefk", "egabe");
+    // cout << longestCommonSubsequence("abefk", "egabe");
+    cout << longestCommonSubseq_SpaceOptimized("abefk", "egabe");
 }
 
 int main()
