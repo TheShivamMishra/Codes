@@ -245,7 +245,7 @@ int longestCommonSubsequence(string str1, string str2) //Time : O(N^2), Space O(
     return dp[n][m];
 }
 
-int longestCommonSubseq_SpaceOptimized(string str1, string str2) //Time: O(N^2), Space O(N);
+int longestCommonSubseq_SpaceOptimized(string str1, string str2) //Time: O(N^2), Space O(2N);
 {
     int n = str1.size();
     int m = str2.size();
@@ -253,7 +253,7 @@ int longestCommonSubseq_SpaceOptimized(string str1, string str2) //Time: O(N^2),
     int idx;
     for (int i = 0; i <= n; i++)
     {
-        idx = (1 & i);  // using to simulate 2D effedt in 1-D using idx;
+        idx = (1 & i); // using to simulate 2D effedt in 1-D using idx;
         for (int j = 0; j <= m; j++)
         {
             if (i == 0 || j == 0)
@@ -268,6 +268,37 @@ int longestCommonSubseq_SpaceOptimized(string str1, string str2) //Time: O(N^2),
     return dp[idx][m];
 }
 
+int longestCommonSubseq_SpaceOptimized_01(string str1, string str2)
+{
+    int n = str1.size();
+    int m = str2.size();
+    vi dp(m + 1, 0);
+    int prev = 0;
+
+    for (int i = 0; i <= n; i++)
+    {
+        prev = 0;
+        for (int j = 0; j <= m; j++)
+        {
+            int tmp = dp[j];
+            if (i == 0 || j == 0)
+                continue;
+            if (str1[i - 1] == str2[j - 1])
+            {
+                // int temp = dp[j];
+                dp[j] = prev + 1;
+                // prev = temp;
+            }
+            else
+                dp[j] = max(dp[j], dp[j - 1]);
+            prev = tmp;
+        }
+        display(dp);
+    }
+
+    return dp[m];
+}
+
 void solve()
 {
     // cout << fibonacci(105) << "\n";
@@ -278,7 +309,8 @@ void solve()
     // cout << longestPalindromeSubseq("abackecabe");
     // cout << longestPalindromeSubseq_SpaceOptimized("abackecabe");
     // cout << longestCommonSubsequence("abefk", "egabe");
-    cout << longestCommonSubseq_SpaceOptimized("abefk", "egabe");
+    // cout << longestCommonSubseq_SpaceOptimized("abefk", "egabe");
+    cout << longestCommonSubseq_SpaceOptimized_01("abcba","abcbcba");
 }
 
 int main()
