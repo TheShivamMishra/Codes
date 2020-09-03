@@ -17,13 +17,6 @@ auto SpeedUp = []() {
     return 0;
 }();
 
-int solve()
-{
-    int n;
-    cin>>n;
-
-}
-
 int main()
 {
     int t;
