@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 fuck off
 fuck off
 fuck off
@@ -7,3 +8,10 @@ fuck off
 fuck off
 fuck off
 0
+=======
+     
+    c 
+ a a a a 
+ a ab ab ab 
+cabac
+>>>>>>> 86d82f1d90b92eda8a833c5865cb49dc36791f6d
