@@ -1,3 +1,4 @@
+<<<<<<< HEAD
  2 3 5 
  2 5 3 
  3 2 5 
@@ -7,3 +8,22 @@
  5 3 2 
  7 3 
 8
+=======
+<<<<<<< HEAD
+fuck off
+fuck off
+fuck off
+fuck off
+fuck off
+fuck off
+fuck off
+fuck off
+0
+=======
+     
+    c 
+ a a a a 
+ a ab ab ab 
+cabac
+>>>>>>> 86d82f1d90b92eda8a833c5865cb49dc36791f6d
+>>>>>>> af25bc103e90b3b8db23ce2bc8282f133398d2b2
