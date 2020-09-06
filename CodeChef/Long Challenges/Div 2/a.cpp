@@ -7,10 +7,10 @@
 using namespace std;
 
 auto SpeedUp = []() {
-#ifndef ONLINE_JUDGE
+    #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
-#endif
+    #endif
     std::ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
@@ -19,16 +19,21 @@ auto SpeedUp = []() {
 
 int solve()
 {
-    int n;
-    cin >> n;
+    int a,b;
+    cin>>a>>b;
+    int m = abs(a-b);
+    int sum = m/10;
+    if(m%10!=0)
+    return sum+1;
+    return sum;
 }
-
-void func(int) { cout << "int"; }
-void func(float) { cout << "float"; }
-void func(double) { cout << "double"; }
 
 int main()
 {
-    func(2.0);
+    int t;
+    cin>>t;
+    while (t--) {
+        cout<<solve()<<'\n';
+    }
     return 0;
 }

@@ -17,18 +17,30 @@ auto SpeedUp = []() {
     return 0;
 }();
 
-int solve()
+void solve()
 {
     int n;
     cin >> n;
+    // cout << n << endl;
+    if (n == 1)
+    {
+        cout << n;
+        return;
+    }
+    vi arr(n, 0);
+    loop(n) cin >> arr[i];
+    reverse(arr.begin(), arr.end());
+    loop(n) cout << arr[i] << " ";
 }
-
-void func(int) { cout << "int"; }
-void func(float) { cout << "float"; }
-void func(double) { cout << "double"; }
 
 int main()
 {
-    func(2.0);
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        solve();
+        cout << '\n';
+    }
     return 0;
 }

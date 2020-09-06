@@ -299,6 +299,11 @@ int longestCommonSubseq_SpaceOptimized_01(string str1, string str2)
     return dp[m];
 }
 
+//coin change using dp
+int coinChangePermutation(vi &coins, int n)
+{
+    vi dp(n + 1, 0);
+}
 void solve()
 {
     // cout << fibonacci(105) << "\n";
@@ -310,7 +315,7 @@ void solve()
     // cout << longestPalindromeSubseq_SpaceOptimized("abackecabe");
     // cout << longestCommonSubsequence("abefk", "egabe");
     // cout << longestCommonSubseq_SpaceOptimized("abefk", "egabe");
-    cout << longestCommonSubseq_SpaceOptimized_01("abcba","abcbcba");
+    cout << longestCommonSubseq_SpaceOptimized_01("abcba", "abcbcba");
 }
 
 int main()
