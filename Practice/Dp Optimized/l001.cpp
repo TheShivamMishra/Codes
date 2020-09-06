@@ -300,10 +300,30 @@ int longestCommonSubseq_SpaceOptimized_01(string str1, string str2)
 }
 
 //coin change using dp
-int coinChangePermutation(vi &coins, int n)
+int coinChangePermutation(vi &coins, int n, int target)
 {
-    vi dp(n + 1, 0);
+    vi dp(target + 1, 0); //dp[i] will store the no of ways to get the target i using all the coins if possible;
+    dp[0] = 1;
+    for (int tar = 1; tar <= target; tar++)
+    {
+        for (int ele : coins)
+            if (tar - ele >= 0)
+                dp[tar] += dp[tar - ele];
+    }
+
+    return dp[target];
 }
+
+// the order of the coins doesn't matter no need to sort;
+int coinChangeCombination(vi &coins, int n, int target)
+{
+    vi dp(target + 1, 0);
+    dp[0] = 1;    // dp[i] will store the count of no of ways to acheive the i sum using each coin;
+    for (int ele : coins)   // this is effect loop in this each coin will produce its effect on each i target;
+        for (int i = ele; i <= target; i++)
+            dp[i] += dp[i - ele];
+}
+
 void solve()
 {
     // cout << fibonacci(105) << "\n";
