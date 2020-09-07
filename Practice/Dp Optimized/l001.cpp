@@ -355,7 +355,7 @@ int TargetSum_SpaceOptimized(vi &coins, int n, int target) // Time: O(N^2), Spac
     dp[0][0] = 1;
     for (int idx = 1; idx <= n; idx++)
     {
-        i = idx & 1;        // using the idx method;
+        i = idx & 1; // using the idx method;
         for (int tar = 0; tar <= target; tar++)
         {
             if (tar == 0)
@@ -372,6 +372,24 @@ int TargetSum_SpaceOptimized(vi &coins, int n, int target) // Time: O(N^2), Spac
     }
 
     return dp[i][target];
+}
+
+// 0/1 Knapsack problem using the same targetsum stratergy i.e either we pick the item or we just leave the item;
+int kanpsack01(vi &wet, vi &val, int n, int weight)
+{
+    vvi dp(n + 1, vi(weight + 1, 0)); //dp[i][w] will store the max profit by using the ith ele or by not;
+    dp[0][0] = 0;                     // total profit by picking no element is 0;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int w = 0; w <= weight; w++)
+        {
+            if (w - wet[i - 1] >= 0)  // pick the element; and ab jo mere kanpsack ki capacity baach gai h usse m baki i-1 elements bahrkar kitna profit kama skta hu;
+                dp[i][w] = max(dp[i][w], dp[i - 1][w - wet[i - 1]] + val[i - 1]);
+            dp[i][w] = max(dp[i][w], dp[i - 1][w]); // no pick then max profit by using i-1 elements to fill the kanpsack;
+        }
+    }
+
+    return dp[n][weight];
 }
 
 void solve()
