@@ -318,10 +318,60 @@ int coinChangePermutation(vi &coins, int n, int target)
 int coinChangeCombination(vi &coins, int n, int target)
 {
     vi dp(target + 1, 0);
-    dp[0] = 1;    // dp[i] will store the count of no of ways to acheive the i sum using each coin;
-    for (int ele : coins)   // this is effect loop in this each coin will produce its effect on each i target;
+    dp[0] = 1;            // dp[i] will store the count of no of ways to acheive the i sum using each coin;
+    for (int ele : coins) // this is effect loop in this each coin will produce its effect on each i target;
         for (int i = ele; i <= target; i++)
             dp[i] += dp[i - ele];
+}
+
+//Target Sum dp solution which uses coin change combination of subsequenece type recursion structur;
+int TargetSum(vi &coins, int n, int target) // Time: O(N^2), Space: O(N^2);
+{
+    vvi dp(n + 1, vi(target + 1, 0)); // dp[idx][tar] will store the no of ways to get tar using idx coins and by not using idx coins;
+    dp[0][0] = 1;
+    for (int idx = 1; idx <= n; idx++)
+    {
+        for (int tar = 0; tar <= target; tar++)
+        {
+            if (tar == 0)
+            {
+                dp[idx][tar] = 1;
+                continue;
+            }
+
+            if (tar - coins[idx - 1] >= 0) // condition for using that coin;
+                dp[idx][tar] += dp[idx - 1][tar - coins[idx - 1]];
+            dp[idx][tar] += dp[idx - 1][tar]; // condition for not using that coin;
+        }
+    }
+
+    return dp[n][target];
+}
+
+int TargetSum_SpaceOptimized(vi &coins, int n, int target) // Time: O(N^2), Space: O(N);
+{
+    vvi dp(2, vi(target + 1, 0));
+    int i;
+    dp[0][0] = 1;
+    for (int idx = 1; idx <= n; idx++)
+    {
+        i = idx & 1;        // using the idx method;
+        for (int tar = 0; tar <= target; tar++)
+        {
+            if (tar == 0)
+            {
+                dp[i][tar] = 1;
+                continue;
+            }
+            dp[i][tar] = 0;
+            if (tar - coins[idx - 1] >= 0)
+                dp[i][tar] += dp[1 - i][tar - coins[idx - 1]];
+            dp[i][tar] += dp[1 - i][tar];
+        }
+        display2D(dp);
+    }
+
+    return dp[i][target];
 }
 
 void solve()
@@ -335,7 +385,9 @@ void solve()
     // cout << longestPalindromeSubseq_SpaceOptimized("abackecabe");
     // cout << longestCommonSubsequence("abefk", "egabe");
     // cout << longestCommonSubseq_SpaceOptimized("abefk", "egabe");
-    cout << longestCommonSubseq_SpaceOptimized_01("abcba", "abcbcba");
+    // cout << longestCommonSubseq_SpaceOptimized_01("abcba", "abcbcba");
+    vi coins = {2, 3, 5, 7};
+    cout << TargetSum_SpaceOptimized(coins, 4, 10);
 }
 
 int main()
