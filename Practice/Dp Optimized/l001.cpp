@@ -375,7 +375,7 @@ int TargetSum_SpaceOptimized(vi &coins, int n, int target) // Time: O(N^2), Spac
 }
 
 // 0/1 Knapsack problem using the same targetsum stratergy i.e either we pick the item or we just leave the item;
-int kanpsack01(vi &wet, vi &val, int n, int weight)
+int kanpsack01(vi &wet, vi &val, int n, int weight) //Time: O(N^2), Space: O(N^2);
 {
     vvi dp(n + 1, vi(weight + 1, 0)); //dp[i][w] will store the max profit by using the ith ele or by not;
     dp[0][0] = 0;                     // total profit by picking no element is 0;
@@ -390,6 +390,25 @@ int kanpsack01(vi &wet, vi &val, int n, int weight)
     }
 
     return dp[n][weight];
+}
+
+int kanpsack01_SpaceOptimized(vi &wet, vi &val, int n, int weight) //Time: O(N^2), Space: O(N);
+{
+       vvi dp(2,vi(weight+1,0));
+       dp[0][0] = 0;
+       int idx;
+       for(int i=1;i<=n;i++)
+       {
+           idx = 1&i;
+           for(int w =0;w<=weight;w++)
+           {
+               if(w - wet[i-1]>=0)
+               dp[idx][w] = dp[1- idx][w -wet[i-1]];
+               dp[idx][w] = max(dp[idx][w],dp[1-idx][w]);
+           }
+       }
+
+       return dp[idx][weight];
 }
 
 void solve()
