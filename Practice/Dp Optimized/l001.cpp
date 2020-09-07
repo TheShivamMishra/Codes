@@ -318,7 +318,7 @@ int coinChangePermutation(vi &coins, int n, int target)
 int coinChangeCombination(vi &coins, int n, int target)
 {
     vi dp(target + 1, 0);
-    dp[0] = 1;            // dp[i] will store the count of no of ways to acheive the i sum using each coin;
+    dp[0] = 1;            // dp[i] will store the count of no of ways to acheive the i target using each coin;
     for (int ele : coins) // this is effect loop in this each coin will produce its effect on each i target;
         for (int i = ele; i <= target; i++)
             dp[i] += dp[i - ele];
@@ -328,7 +328,7 @@ int coinChangeCombination(vi &coins, int n, int target)
 int TargetSum(vi &coins, int n, int target) // Time: O(N^2), Space: O(N^2);
 {
     vvi dp(n + 1, vi(target + 1, 0)); // dp[idx][tar] will store the no of ways to get tar using idx coins and by not using idx coins;
-    dp[0][0] = 1;
+    dp[0][0] = 1;                     // no of ways to get 0 target with 0 & more coins is 1 i.e don't use any coin;
     for (int idx = 1; idx <= n; idx++)
     {
         for (int tar = 0; tar <= target; tar++)
@@ -383,7 +383,7 @@ int kanpsack01(vi &wet, vi &val, int n, int weight) //Time: O(N^2), Space: O(N^2
     {
         for (int w = 0; w <= weight; w++)
         {
-            if (w - wet[i - 1] >= 0)  // pick the element; and ab jo mere kanpsack ki capacity baach gai h usse m baki i-1 elements bahrkar kitna profit kama skta hu;
+            if (w - wet[i - 1] >= 0) // pick the element; and ab jo mere kanpsack ki capacity baach gai h usse m baki i-1 elements bahrkar kitna profit kama skta hu;
                 dp[i][w] = max(dp[i][w], dp[i - 1][w - wet[i - 1]] + val[i - 1]);
             dp[i][w] = max(dp[i][w], dp[i - 1][w]); // no pick then max profit by using i-1 elements to fill the kanpsack;
         }
@@ -394,21 +394,25 @@ int kanpsack01(vi &wet, vi &val, int n, int weight) //Time: O(N^2), Space: O(N^2
 
 int kanpsack01_SpaceOptimized(vi &wet, vi &val, int n, int weight) //Time: O(N^2), Space: O(N);
 {
-       vvi dp(2,vi(weight+1,0));
-       dp[0][0] = 0;
-       int idx;
-       for(int i=1;i<=n;i++)
-       {
-           idx = 1&i;
-           for(int w =0;w<=weight;w++)
-           {
-               if(w - wet[i-1]>=0)
-               dp[idx][w] = dp[1- idx][w -wet[i-1]];
-               dp[idx][w] = max(dp[idx][w],dp[1-idx][w]);
-           }
-       }
+    vvi dp(2, vi(weight + 1, 0));
+    dp[0][0] = 0;
+    int idx;
+    for (int i = 1; i <= n; i++)
+    {
+        idx = 1 & i;
+        for (int w = 0; w <= weight; w++)
+        {
+            if (w - wet[i - 1] >= 0)
+                dp[idx][w] = dp[1 - idx][w - wet[i - 1]];
+            dp[idx][w] = max(dp[idx][w], dp[1 - idx][w]);
+        }
+    }
 
-       return dp[idx][weight];
+    return dp[idx][weight];
+}
+
+int knapsack01_SpaceOptimized_01(vi &wet, vi &val, int n, int weight)
+{
 }
 
 void solve()
