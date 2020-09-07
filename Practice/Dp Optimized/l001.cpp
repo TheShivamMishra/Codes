@@ -411,8 +411,16 @@ int kanpsack01_SpaceOptimized(vi &wet, vi &val, int n, int weight) //Time: O(N^2
     return dp[idx][weight];
 }
 
-int knapsack01_SpaceOptimized_01(vi &wet, vi &val, int n, int weight)
+int knapsack01_SpaceOptimized_01(vi &wet, vi &val, int n, int weight) //Time: O(N^2), Space: O(N);
 {
+    vi dp(weight+1,0);  
+    for(int i =0;i<n;i++)
+    {
+        for(int w = weight;w>=wet[i];w--) //dp[w] will store the max profit to fill the w weight kanpsack;
+        dp[w] = max(dp[w],val[i] + dp[w - wet[i]]); //dp[w] =  max profit if i don't include the element;
+    }                                                // val[i] + dp[w - wet[i]] = max profit if i include the ith element
+
+    return dp[weight];
 }
 
 void solve()
