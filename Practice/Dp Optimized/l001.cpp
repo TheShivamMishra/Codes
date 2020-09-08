@@ -441,7 +441,7 @@ int MCM(vi &arr, int si, int ei, vvi &dp)
         int left = MCM(arr, si, cut, dp);  // left wala muje apna multiplication cost dega and multiply ho kr aeyga;
         int right = MCM(arr, cut, ei, dp); // right wale muje apne multiplication cost dega & multiply ho kr aeyga;
 
-        int myans = left + arr[si] * arr[cut] * arr[ei] + right;  // then m left & right ko multiply karne ka cost nikalunga;
+        int myans = left + arr[si] * arr[cut] * arr[ei] + right; // then m left & right ko multiply karne ka cost nikalunga;
         if (myans < ans)
             ans = myans;
     }
@@ -451,7 +451,30 @@ int MCM(vi &arr, int si, int ei, vvi &dp)
 
 int MCM_DP(vi &arr, int n)
 {
-    vvi dp(n + 1, vi(n + 1, 0));
+    vvi dp(n + 1, vi(n + 1, 0)); // dp[si][ei] will store the min multiplication cost required to multiply matrix from i to j;
+    for (int gap = 0; gap <= n; gap++)
+    {
+        for (int si = 0, ei = gap; ei <= n; si++, ei++)
+        {
+            if (si + 1 == ei)
+            {
+                dp[si][ei] = 0;
+                continue;
+            }
+            int ans = 1e9;
+            for (int cut = si + 1; cut < ei; cut++) // putting the cut b/w the si and ei;
+            {
+                int left = dp[si][cut];
+                int right = dp[cut][ei];
+
+                int myans = left + arr[si] * arr[cut] * arr[ei] + right;
+                if (myans < ans)
+                    myans = ans;
+            }
+            dp[si][ei] = ans;
+        }
+    }
+    return dp[0][n];
 }
 
 void solve()
