@@ -413,14 +413,45 @@ int kanpsack01_SpaceOptimized(vi &wet, vi &val, int n, int weight) //Time: O(N^2
 
 int knapsack01_SpaceOptimized_01(vi &wet, vi &val, int n, int weight) //Time: O(N^2), Space: O(N);
 {
-    vi dp(weight+1,0);  
-    for(int i =0;i<n;i++)
+    vi dp(weight + 1, 0);
+    for (int i = 0; i < n; i++)
     {
-        for(int w = weight;w>=wet[i];w--) //dp[w] will store the max profit to fill the w weight kanpsack;
-        dp[w] = max(dp[w],val[i] + dp[w - wet[i]]); //dp[w] =  max profit if i don't include the element;
-    }                                                // val[i] + dp[w - wet[i]] = max profit if i include the ith element
+        for (int w = weight; w >= wet[i]; w--)           //dp[w] will store the max profit to fill the w weight kanpsack;
+            dp[w] = max(dp[w], val[i] + dp[w - wet[i]]); //dp[w] =  max profit if i don't include the element;
+    }                                                    // val[i] + dp[w - wet[i]] = max profit if i include the ith element
 
     return dp[weight];
+}
+
+// MatrixChain Multiplication
+int MCM(vi &arr, int si, int ei, vvi &dp)
+{
+    if (si + 1 == ei)
+    {
+        dp[si][ei] = 0;
+        return;
+    }
+
+    if (dp[si][ei] != -1)
+        return dp[si][ei];
+
+    int ans = 1e9;
+    for (int cut = si + 1; cut < ei; cut++)
+    {
+        int left = MCM(arr, si, cut, dp);  // left wala muje apna multiplication cost dega and multiply ho kr aeyga;
+        int right = MCM(arr, cut, ei, dp); // right wale muje apne multiplication cost dega & multiply ho kr aeyga;
+
+        int myans = left + arr[si] * arr[cut] * arr[ei] + right;  // then m left & right ko multiply karne ka cost nikalunga;
+        if (myans < ans)
+            ans = myans;
+    }
+
+    dp[si][ei] = ans;
+}
+
+int MCM_DP(vi &arr, int n)
+{
+    vvi dp(n + 1, vi(n + 1, 0));
 }
 
 void solve()
