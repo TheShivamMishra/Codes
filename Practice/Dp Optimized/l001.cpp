@@ -451,8 +451,8 @@ int MCM(vi &arr, int si, int ei, vvi &dp)
 
 int MCM_DP(vi &arr, int n)
 {
-    vvi dp(n + 1, vi(n + 1, 0)); // dp[si][ei] will store the min multiplication cost required to multiply matrix from i to j;
-    for (int gap = 0; gap <= n; gap++)
+    vvi dp(n, vi(n, 0)); // dp[si][ei] will store the min multiplication cost required to multiply matrix from i to j;
+    for (int gap = 0; gap < n; gap++)
     {
         for (int si = 0, ei = gap; ei <= n; si++, ei++)
         {
@@ -475,6 +475,59 @@ int MCM_DP(vi &arr, int n)
         }
     }
     return dp[0][n];
+}
+
+//Cost of searching in optimal binary search tree;
+int CostOfSearching(vi &freq, int si, int ei)
+{
+    int sum = 0;
+    for (int i = si; i <= ei; i++)
+        sum += freq[i];
+    return sum;
+}
+
+int OBST(vi &freq, int si, int ei, vvi &dp) //Time: O(N^4), Space:O(N^2);
+{
+    if (dp[si][ei] != 0)
+        return dp[si][ei];
+    int ans = 1e8;
+    for (int cut = si; cut <= ei; cut++) // me ith index ko root node bana kr left aur right se bolunga tum apna dekh lo;
+    {
+        int leftTreeCost = si == cut ? 0 : OBST(freq, si, cut - 1, dp);
+        int rightTreeCost = ei == cut ? 0 : OBST(freq, cut + 1, ei, dp);
+
+        int myans = leftTreeCost + CostOfSearching(freq, si, ei) + rightTreeCost;
+        if (ans > myans)
+            ans = myans;
+    }
+
+    return dp[si][ei] = ans;
+}
+
+int OBST_DP(vi &freq, int n)
+{
+    vi prefiSum(n + 1, 0); // it will store the sum of prefixe till that index;
+    for (int i = 1; i <= n; i++)
+        prefiSum[i] = prefiSum[i - 1] + freq[i - 1];
+    vvi dp(n, vi(n, 0));
+    for (int gap = 0; gap < n; gap++) // dp[si][ei] = min cost of make OBST from si to ei;
+    {
+        for (int si = 0, ei = gap; ei < n; si++, ei++)
+        {
+            int ans = 1e9;
+            for (int cut = si; cut <= ei; cut++)
+            {
+                int leftTreeCost = si == cut ? 0 : dp[si][cut - 1];
+                int rightTreeCost = ei == cut ? 0 : dp[cut + 1][ei];
+                int myans = leftTreeCost + prefiSum[ei + 1] - prefiSum[si] + rightTreeCost;
+                if (ans > myans)
+                    ans = myans;
+            }
+            dp[si][ei] = ans;
+        }
+    }
+
+    return dp[0][n - 1];
 }
 
 void solve()
