@@ -530,6 +530,53 @@ int OBST_DP(vi &freq, int n)
     return dp[0][n - 1];
 }
 
+// Baloon Brust dp
+
+int brustBaloon(vi &arr, int si, int ei, vvi &dp)
+{
+    if (dp[si][ei] != 0)
+        return dp[si][ei];
+    int l = si == 0 ? 1 : arr[si - 1];
+    int r = ei == arr.size() - 1 ? 1 : arr[ei + 1];
+    int ans = 0;
+    for (int cut = si; cut <= ei; cut++)
+    {
+        int leftCost = cut == si ? 0 : brustBaloon(arr, si, cut - 1, dp);
+        int rightCost = cut == ei ? 0 : brustBaloon(arr, cut + 1, ei, dp);
+
+        int mycost = leftCost + l * arr[cut] * r + rightCost;
+        if (mycost > ans)
+            ans = mycost;
+    }
+
+    return dp[si][ei] = ans;
+}
+
+int brustBaloonDP(vi &arr)
+{
+    int n = arr.size();
+    vvi dp(n, vi(n, 0));
+    for (int gap = 0; gap < n; gap++)
+    {
+        for (int si = 0, ei = gap; ei < n; si++, ei++)
+        {
+            int ans = 0;
+            int l = si == 0 ? 1 : arr[si - 1];
+            int l = ei == n - 1 ? 1 : arr[ei + 1];
+            for (int cut = si; cut <= ei; cut++)
+            {
+                int leftCost = si == cut ? 0 : dp[si][cut - 1];
+                int rightCost = ei == cut ? 0 : dp[cut + 1][ei];
+
+                int mycost = leftCost + l * arr[cut] * r + rightCost;
+                if (ans < mycost)
+                    ans = mycost;
+            }
+        }
+    }
+    return dp[0][n - 1];
+}
+
 void solve()
 {
     // cout << fibonacci(105) << "\n";
