@@ -562,7 +562,7 @@ int brustBaloonDP(vi &arr)
         {
             int ans = 0;
             int l = si == 0 ? 1 : arr[si - 1];
-            int l = ei == n - 1 ? 1 : arr[ei + 1];
+            int r = ei == n - 1 ? 1 : arr[ei + 1];
             for (int cut = si; cut <= ei; cut++)
             {
                 int leftCost = si == cut ? 0 : dp[si][cut - 1];
