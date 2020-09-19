@@ -17,11 +17,16 @@ auto SpeedUp = []() {
     return 0;
 }();
 
-int solve()
+lli solve()
 {
-    int n;
-    cin>>n;
-
+    lli x,y,k;
+    cin>>x>>y>>k; 
+    lli tsticks = y*k + k;
+    // cout<<tsticks<<" "<<endl;
+    lli n = (tsticks-1)/(x-1);
+    lli an = 1 + n*(x-1);
+    if(an<tsticks)n++;
+    return n + k;
 }
 
 int main()

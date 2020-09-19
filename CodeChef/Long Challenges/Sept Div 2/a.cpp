@@ -17,15 +17,31 @@ auto SpeedUp = []() {
     return 0;
 }();
 
+const int N = 1e5+1;
+int arr[N];
 int solve()
 {
-    int a,b;
-    cin>>a>>b;
-    int m = abs(a-b);
-    int sum = m/10;
-    if(m%10!=0)
-    return sum+1;
-    return sum;
+    memset(arr,0,sizeof(arr));
+    int n;
+    cin>>n;
+    int omax = 0;
+    for(int i =0;i<n;i++)
+    {
+        int a;
+        cin>>a;
+        omax = a>omax?a:omax;
+        arr[a] = 1;
+    }
+    int cut =0,prev = omax;
+    for(int i=omax-1;i>=0;i--)
+    {
+        if(arr[i])
+        {
+            cut++;
+           
+        }
+    }
+    return cut+1;
 }
 
 int main()
